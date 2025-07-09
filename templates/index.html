@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}TTS Generator - driaClaude{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Text-to-Speech Generator</h1>
+        <p>Generate ultra-realistic dialogue and speech with granular control</p>
+    </div>
+
+    <div class="tts-interface">
+        <!-- Text Input Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-keyboard"></i> Text Input</h2>
+            </div>
+            <div class="card-body">
+                <textarea id="textInput" class="form-control" rows="6" placeholder="Enter your text here. Use [S1] and [S2] for dialogue..."></textarea>
+                <div class="help-text">
+                    <p><strong>Tips:</strong></p>
+                    <ul>
+                        <li>Use [S1] for speaker 1 and [S2] for speaker 2</li>
+                        <li>Add non-verbal sounds like (laughs), (sighs), (coughs)</li>
+                        <li>Example: [S1] Hello! (laughs) [S2] Hi there! How are you?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voice Selection -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-user-circle"></i> Voice Selection</h2>
+            </div>
+            <div class="card-body">
+                <select id="voiceSelect" class="form-control">
+                    <option value="">Default Voice (Random)</option>
+                </select>
+                <button class="btn btn-secondary" onclick="loadVoices()">
+                    <i class="fas fa-sync"></i> Refresh Voices
+                </button>
+            </div>
+        </div>
+
+        <!-- Parameters -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-sliders-h"></i> Generation Parameters</h2>
+            </div>
+            <div class="card-body">
+                <div class="parameter-grid">
+                    <div class="parameter-item">
+                        <label for="temperature">Temperature: <span id="tempValue">1.8</span></label>
+                        <input type="range" id="temperature" min="0.1" max="2.0" step="0.1" value="1.8">
+                    </div>
+                    <div class="parameter-item">
+                        <label for="guidanceScale">Guidance Scale: <span id="guidanceValue">3.0</span></label>
+                        <input type="range" id="guidanceScale" min="1.0" max="10.0" step="0.5" value="3.0">
+                    </div>
+                    <div class="parameter-item">
+                        <label for="topP">Top P: <span id="topPValue">0.90</span></label>
+                        <input type="range" id="topP" min="0.1" max="1.0" step="0.05" value="0.90">
+                    </div>
+                    <div class="parameter-item">
+                        <label for="topK">Top K: <span id="topKValue">45</span></label>
+                        <input type="range" id="topK" min="1" max="100" step="1" value="45">
+                    </div>
+                    <div class="parameter-item">
+                        <label for="seed">Seed (optional):</label>
+                        <input type="number" id="seed" class="form-control" placeholder="Random">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="generate-section">
+            <button id="generateBtn" class="btn btn-primary btn-large" onclick="generateSpeech()">
+                <i class="fas fa-play-circle"></i> Generate Speech
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="card" style="display: none;">
+            <div class="card-header">
+                <h2><i class="fas fa-volume-up"></i> Generated Audio</h2>
+            </div>
+            <div class="card-body">
+                <div class="audio-player">
+                    <audio id="audioPlayer" controls></audio>
+                </div>
+                <div class="audio-actions">
+                    <a id="downloadBtn" class="btn btn-success" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    <button class="btn btn-secondary" onclick="copyAudioUrl()">
+                        <i class="fas fa-link"></i> Copy URL
+                    </button>
+                </div>
+                <div id="audioMetadata" class="metadata"></div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="loading-overlay" style="display: none;">
+            <div class="spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Generating speech...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Generations -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2><i class="fas fa-history"></i> Recent Generations</h2>
+        </div>
+        <div class="card-body">
+            <div id="recentList" class="recent-list">
+                <p class="text-muted">No recent generations</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/js/tts.js"></script>
+{% endblock %}

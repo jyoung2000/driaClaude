@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Voice Management - driaClaude{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="hero">
+        <h1>Voice Management</h1>
+        <p>Clone and manage custom voices for TTS generation</p>
+    </div>
+
+    <div class="voice-interface">
+        <!-- Voice Cloning Section -->
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-microphone"></i> Clone New Voice</h2>
+            </div>
+            <div class="card-body">
+                <form id="cloneForm" onsubmit="cloneVoice(event)">
+                    <div class="form-group">
+                        <label for="voiceName">Voice Name</label>
+                        <input type="text" id="voiceName" class="form-control" required placeholder="e.g., John Doe">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="voiceDescription">Description (optional)</label>
+                        <input type="text" id="voiceDescription" class="form-control" placeholder="e.g., Male, deep voice">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="audioFile">Audio Sample (5-10 seconds)</label>
+                        <input type="file" id="audioFile" class="form-control" accept=".mp3,.wav,.flac,.ogg" required>
+                        <small class="help-text">Upload a clear audio sample of the voice you want to clone</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="transcript">Transcript</label>
+                        <textarea id="transcript" class="form-control" rows="3" required placeholder="[S1] Type exactly what is said in the audio sample"></textarea>
+                        <small class="help-text">Provide accurate transcript with [S1] or [S2] tags</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-clone"></i> Clone Voice
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Voice Library -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h2><i class="fas fa-database"></i> Voice Library</h2>
+                <button class="btn btn-secondary btn-sm" onclick="loadVoiceLibrary()">
+                    <i class="fas fa-sync"></i> Refresh
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="voiceLibrary" class="voice-grid">
+                    <div class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading voices...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p id="loadingMessage">Processing...</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %>
+<script src="/static/js/voices.js"></script>
+{% endblock %}

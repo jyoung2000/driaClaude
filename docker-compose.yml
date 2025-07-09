@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  driaclaude:
+    build: .
+    container_name: driaclaude
+    ports:
+      - "4144:4144"
+    environment:
+      - PORT=4144
+      - WORKERS=2
+      - LOG_LEVEL=info
+      - API_KEY=${API_KEY:-default_key_change_in_production}
+      - MAX_AUDIO_LENGTH=300
+      - ENABLE_AUTH=${ENABLE_AUTH:-false}
+    volumes:
+      - ./data:/app/data
+      - ./voices:/app/voices
+      - ./outputs:/app/outputs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4144/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

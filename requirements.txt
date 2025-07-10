@@ -17,7 +17,7 @@ librosa==0.10.2
 # Web UI
 jinja2==3.1.5
 python-jose[cryptography]==3.3.0
-aiofiles==25.1.0
+aiofiles==24.1.0
 
 # Utilities
 numpy==1.26.4
@@ -27,4 +27,4 @@ loguru==0.7.3
 python-dotenv==1.0.1
 
 # API documentation
-swagger-ui-py==25.1.1
+swagger-ui-py==22.7.1

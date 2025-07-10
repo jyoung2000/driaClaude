@@ -9,7 +9,7 @@ services:
     environment:
       - PORT=4144
       - WORKERS=2
-      - LOG_LEVEL=info
+      - LOG_LEVEL=INFO
       - API_KEY=${API_KEY:-default_key_change_in_production}
       - MAX_AUDIO_LENGTH=300
       - ENABLE_AUTH=${ENABLE_AUTH:-false}
